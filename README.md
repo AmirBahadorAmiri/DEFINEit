@@ -57,6 +57,15 @@ https://myket.ir/app/ir.DEFINEit
 - Local database with Room + RxJava3
 - Networking with OkHttp
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="./screenshots/screen1.jpg" width="200" alt="Screen 1" />
+  <img src="./screenshots/screen2.jpg" width="200" alt="Screen 2" />
+  <img src="./screenshots/screen3.jpg" width="200" alt="Screen 3" />
+  <img src="./screenshots/screen4.jpg" width="200" alt="Screen 4" />
+</p>
+
 ## 🛠 Tech Stack
 
 | Layer | Library / Tool |
