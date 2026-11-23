@@ -9,46 +9,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import ir.DEFINEit.models.TextModel;
 import ir.DEFINEit.models.WordModel;
 
-@Database(entities = {WordModel.class, TextModel.class}, version = 2, exportSchema = false)
+@Database(entities = {WordModel.class}, version = 3, exportSchema = false)
 public abstract class MyDB extends RoomDatabase {
 
     private static MyDB myDB;
-//
-//    public static void copyDatabase(Context context) {
-//
-//        String database_path = "data/data/" + context.getPackageName() + "/databases/";
-//        String database_name = "words";
-//
-//        try {
-//            File dir = new File(database_path);
-//            if (!dir.exists()) {
-//                dir.mkdir();
-//            }
-//
-//            File file = new File(database_path, database_name);
-//            if (!file.exists()) {
-//
-//                OutputStream outputStream = new FileOutputStream(database_path + database_name);
-//                byte[] buffer = new byte[1024];
-//                int lenght;
-//                InputStream inputStream = context.getAssets().open("database/words");
-//                while ((lenght = inputStream.read(buffer)) > 0) {
-//                    outputStream.write(buffer, 0, lenght);
-//                }
-//                inputStream.close();
-//                outputStream.flush();
-//                outputStream.close();
-//
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
     public static MyDB getInstance(Context context) {
         if (myDB == null)
@@ -58,25 +24,21 @@ public abstract class MyDB extends RoomDatabase {
                         @Override
                         public void migrate(@NonNull SupportSQLiteDatabase database) {
                         }
+                    }, new Migration(2, 3) {
+                        @Override
+                        public void migrate(@NonNull SupportSQLiteDatabase database) {
+                            database.execSQL("DROP TABLE IF EXISTS text_tb");
+                            database.execSQL("CREATE TABLE word_tb_new (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `persian_word` TEXT, `english_word` TEXT)");
+                            database.execSQL("INSERT INTO word_tb_new (`id`, `persian_word`, `english_word`) SELECT `id`, `persian_word`, `english_word` FROM word_tb");
+                            database.execSQL("DROP TABLE word_tb");
+                            database.execSQL("ALTER TABLE word_tb_new RENAME TO word_tb");
+                        }
                     })
                     .fallbackToDestructiveMigration()
                     .build();
-
-        /*
-        *
-        * .addMigrations(new Migration(1,2) {
-                        @Override
-                        public void migrate(@NonNull SupportSQLiteDatabase database) {
-                            database.execSQL("CREATE TABLE 'sentence_tb' ('id' INTEGER Not null, 'segment' Text, 'translation' Text , PRIMARY KEY('id'))");
-                        }
-                    })
-        *
-        * */
         return myDB;
     }
 
     public abstract WordDao getWordDao();
-
-    public abstract TextDao getTextDao();
 
 }

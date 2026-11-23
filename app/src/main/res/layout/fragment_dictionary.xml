@@ -3,97 +3,74 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageBackground">
+    android:background="@color/page_background">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/fragment_dictionary_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:text="@string/dictionary"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/HeaderText"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/fragment_dictionary_settings_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginRight="24dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/setting_icon_bg" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/fragment_dictionary_history_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_settings_icon"
-        app:layout_constraintLeft_toRightOf="@id/fragment_dictionary_settings_icon"
-        app:layout_constraintTop_toTopOf="@id/fragment_dictionary_settings_icon"
-        app:srcCompat="@drawable/history_icon" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/fragment_dictionary_star_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_settings_icon"
-        app:layout_constraintLeft_toRightOf="@id/fragment_dictionary_history_icon"
-        app:layout_constraintTop_toTopOf="@id/fragment_dictionary_settings_icon"
-        app:srcCompat="@drawable/star_icon" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:text="@string/dictionary"
-        android:textColor="@color/textColor"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_settings_icon"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_title"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/fragment_dictionary_settings_icon" />
+        app:layout_constraintTop_toTopOf="@id/fragment_dictionary_title"
+        app:srcCompat="@drawable/ic_settings" />
 
     <View
         android:id="@+id/fragment_dictionary_search_view"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="56dp"
+        android:layout_marginLeft="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/round_background_16dp"
+        android:layout_marginRight="24dp"
+        android:background="@drawable/bg_card"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_dictionary_settings_icon" />
+        app:layout_constraintTop_toBottomOf="@id/fragment_dictionary_title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/fragment_dictionary_mic_icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginLeft="8dp"
-        android:background="@drawable/ripple_color"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_search_view"
         app:layout_constraintLeft_toLeftOf="@id/fragment_dictionary_search_view"
         app:layout_constraintTop_toTopOf="@id/fragment_dictionary_search_view"
-        app:srcCompat="@drawable/mic_icon_nobg" />
+        app:srcCompat="@drawable/ic_mic" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/fragment_dictionary_search_edittext"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="20dp"
         android:background="@android:color/transparent"
-        android:hint="@string/search_in_dictionary"
+        android:gravity="center_vertical"
+        android:hint="@string/search_hint"
         android:inputType="text"
         android:maxLines="1"
-        android:textColor="@color/textColor"
-        android:textColorHint="@color/hintColor"
-        android:textSize="14sp"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/hint_text_color"
+        android:textSize="@dimen/LargeText"
+        android:textStyle="normal"
         app:layout_constraintBottom_toBottomOf="@id/fragment_dictionary_search_view"
         app:layout_constraintLeft_toRightOf="@id/fragment_dictionary_mic_icon"
         app:layout_constraintRight_toRightOf="@id/fragment_dictionary_search_view"
@@ -103,9 +80,11 @@
         android:id="@+id/fragment_dictionary_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

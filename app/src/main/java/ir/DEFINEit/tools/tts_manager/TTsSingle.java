@@ -7,9 +7,9 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import ir.DEFINEit.AppManager;
 import ir.DEFINEit.listener.ResponseListener;
 import ir.DEFINEit.tools.language_manager.LanguageManager;
-import ir.DEFINEit.tools.shared_helper.SharedSingle;
 
 public class TTsSingle {
 
@@ -60,14 +60,14 @@ public class TTsSingle {
     }
 
     public static boolean isMan(Context context) {
-        if (SharedSingle.getSharedHelper(context).readString(TTS).equals(""))
-            SharedSingle.getSharedHelper(context).insert(TTS, WOMAN);
-        return SharedSingle.getSharedHelper(context).readString(TTS).equals(MAN);
+        if (AppManager.qshare.readString(TTS).isEmpty())
+            AppManager.qshare.writeString(TTS, WOMAN);
+        return AppManager.qshare.readString(TTS).equals(MAN);
     }
 
     public static void setMan(Context context, boolean isMan) {
-        if (isMan) SharedSingle.getSharedHelper(context).insert(TTS, MAN);
-        else SharedSingle.getSharedHelper(context).insert(TTS, WOMAN);
+        if (isMan) AppManager.qshare.writeString(TTS, MAN);
+        else AppManager.qshare.writeString(TTS, WOMAN);
     }
 
 }

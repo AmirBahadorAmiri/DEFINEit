@@ -1,7 +1,6 @@
 package ir.DEFINEit.adapters;
 
 import android.media.AudioManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amirbahadoramiri.logger.Logger;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
             conversation_item_speaker.setOnClickListener(v -> {
                 if (VolumeManager.getVolume(itemView.getContext()) == 0) {
                     Snackbar.make(v, "صدای سیستم قطع است", Snackbar.LENGTH_LONG)
-                            .setAction("افزایش صدا", n -> VolumeManager.setVolume(itemView.getContext(), VolumeManager.getManager(itemView.getContext()).getStreamMaxVolume(AudioManager.STREAM_MUSIC))).setActionTextColor(ContextCompat.getColor(itemView.getContext(), R.color.blueColor)).show();
+                            .setAction("افزایش صدا", n -> VolumeManager.setVolume(itemView.getContext(), VolumeManager.getManager(itemView.getContext()).getStreamMaxVolume(AudioManager.STREAM_MUSIC))).setActionTextColor(ContextCompat.getColor(itemView.getContext(), R.color.text_color)).show();
                 } else {
                     TTsSingle.initialize(itemView.getContext(), new ResponseListener() {
                         @Override
@@ -92,7 +92,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
                         @Override
                         public void onFailure(Throwable throwable) {
-                            Log.d("TAG", "tts manager failure");
+                            Logger.debug("ConversationAdapter", "tts manager failure");
                         }
                     });
                 }

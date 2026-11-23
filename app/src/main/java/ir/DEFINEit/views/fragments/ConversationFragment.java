@@ -7,6 +7,9 @@ import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,12 +42,13 @@ public class ConversationFragment extends Fragment {
 
     public static ConversationFragment conversationFragment;
 
-    AppCompatImageView activity_conversation_settings_btn, activity_conversation_mic_btn, activity_conversation_reverse_btn, activity_conversation_send_from, activity_conversation_send_to;
+    AppCompatImageView activity_conversation_settings_btn, activity_conversation_mic_from, activity_conversation_mic_to, activity_conversation_reverse_btn, activity_conversation_send_from, activity_conversation_send_to;
     AppCompatEditText activity_conversation_edittext;
     MaterialButton activity_conversation_from_btn, activity_conversation_to_btn;
     RecyclerView activity_conversation_recyclerview;
     List<ConversationModel> conversationModelList = new ArrayList<>();
     ConversationAdapter conversationAdapter;
+    private float reverseAngle = 0f;
 
     @Nullable
     @Override
@@ -61,7 +65,8 @@ public class ConversationFragment extends Fragment {
 
     private void findViews(View view) {
         activity_conversation_settings_btn = view.findViewById(R.id.activity_conversation_settings_btn);
-        activity_conversation_mic_btn = view.findViewById(R.id.activity_conversation_mic_btn);
+        activity_conversation_mic_from = view.findViewById(R.id.activity_conversation_mic_from);
+        activity_conversation_mic_to = view.findViewById(R.id.activity_conversation_mic_to);
         activity_conversation_reverse_btn = view.findViewById(R.id.activity_conversation_reverse_btn);
         activity_conversation_send_from = view.findViewById(R.id.activity_conversation_send_from);
         activity_conversation_send_to = view.findViewById(R.id.activity_conversation_send_to);
@@ -78,18 +83,14 @@ public class ConversationFragment extends Fragment {
         activity_conversation_reverse_btn.setOnClickListener(v -> {
             LanguageManager.reverceLanguage(requireContext());
             getLanguages();
+            animateReverse();
+            animateLanguages();
         });
 
-        activity_conversation_mic_btn.setOnClickListener(v -> {
-            Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, LanguageManager.getFromLangaugeCode(requireContext()));
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "fa-IR");
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true);
-
-            startActivityForResult(voiceIntent, 1002);
-        });
+        activity_conversation_mic_from.setOnClickListener(v ->
+                startVoice(LanguageManager.getFromLangaugeCode(requireContext())));
+        activity_conversation_mic_to.setOnClickListener(v ->
+                startVoice(LanguageManager.getToLangaugeCode(requireContext())));
 
         activity_conversation_to_btn.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), ChangeLanguageActivity.class);
@@ -136,6 +137,13 @@ public class ConversationFragment extends Fragment {
         layoutManager.setStackFromEnd(true); // شروع از انتها
         activity_conversation_recyclerview.setLayoutManager(layoutManager);
         activity_conversation_recyclerview.setAdapter(conversationAdapter);
+    }
+
+    private void startVoice(String locale) {
+        Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale);
+        startActivityForResult(voiceIntent, 1002);
     }
 
     private void translate(String text, String fromLanguage, String toLanguage) {
@@ -192,6 +200,20 @@ public class ConversationFragment extends Fragment {
     private void getLanguages() {
         activity_conversation_from_btn.setText(LanguageManager.getFromLangauge(requireContext()));
         activity_conversation_to_btn.setText(LanguageManager.getToLangauge(requireContext()));
+    }
+
+    private void animateReverse() {
+        reverseAngle += 180f;
+        RotateAnimation animation = new RotateAnimation(reverseAngle - 180f, reverseAngle,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(300);
+        animation.setFillAfter(true);
+        activity_conversation_reverse_btn.startAnimation(animation);
+    }
+
+    private void animateLanguages() {
+        activity_conversation_from_btn.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.language_from));
+        activity_conversation_to_btn.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.language_to));
     }
 
     @Override

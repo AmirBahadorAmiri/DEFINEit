@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
+import com.amirbahadoramiri.logger.Logger;
 
 public class Packager {
 
@@ -13,7 +13,7 @@ public class Packager {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.d("TAG", "getVersionName: " + e.getMessage());
+            Logger.debug("Packager", "getVersionName: " + e.getMessage(), e);
         }
         return "";
     }
@@ -26,7 +26,7 @@ public class Packager {
         try {
             return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.d("TAG", "getVersionName: " + e.getMessage());
+            Logger.debug("Packager", "getVersionName: " + e.getMessage(), e);
         }
         return 0;
     }
@@ -48,7 +48,7 @@ public class Packager {
             context.getPackageManager().getPackageInfo(packageName, 0);
             return true;
         } catch (PackageManager.NameNotFoundException e) {
-            Log.d("TAG", "getVersionName: " + e.getMessage());
+            Logger.debug("Packager", "getVersionName: " + e.getMessage(), e);
         }
         return false;
     }

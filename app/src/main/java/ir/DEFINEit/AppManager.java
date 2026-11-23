@@ -2,9 +2,11 @@ package ir.DEFINEit;
 
 import android.app.Application;
 
-import io.github.inflationx.calligraphy3.CalligraphyConfig;
-import io.github.inflationx.calligraphy3.CalligraphyInterceptor;
-import io.github.inflationx.viewpump.ViewPump;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.amirbahadoramiri.logger.Logger;
+import com.github.amirbahadoramiri.qshare.QShare;
+
 import ir.DEFINEit.listener.ResponseListener;
 import ir.DEFINEit.tools.copy_helper.CopyHelper;
 import ir.DEFINEit.tools.language_manager.LanguageManager;
@@ -13,10 +15,16 @@ import okhttp3.Response;
 
 public class AppManager extends Application {
 
+    public static final String DARK_THEME = "dark_theme";
+    public static QShare qshare;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        setupFont();
+        Logger.setEnabled(BuildConfig.DEBUG);
+        qshare = new QShare(this, "app_prefs");
+        AppCompatDelegate.setDefaultNightMode(qshare.readBoolean(DARK_THEME, false)
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         setupTTS();
         CopyHelper.initialize(this);
     }
@@ -30,18 +38,9 @@ public class AppManager extends Application {
 
             @Override
             public void onFailure(Throwable throwable) {
+                Logger.error("AppManager", "tts initialization failed", throwable);
             }
         });
-    }
-
-    private void setupFont() {
-        ViewPump.init(ViewPump.builder()
-                .addInterceptor(new CalligraphyInterceptor(
-                        new CalligraphyConfig.Builder()
-                                .setDefaultFontPath("fonts/vazir.ttf")
-                                .setFontAttrId(io.github.inflationx.calligraphy3.R.attr.fontPath)
-                                .build()))
-                .build());
     }
 
 }

@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/dictionary" android:title="@string/dictionary" android:icon="@drawable/ic_search" />
-    <item android:id="@+id/translate" android:title="@string/translate" android:icon="@drawable/ic_translate" />
-    <item android:id="@+id/conversation" android:title="@string/conversation" android:icon="@drawable/conversation_icon" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/dictionary"
+        android:title=""
+        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconTintMode="src_in"
+        android:icon="@drawable/ic_search" />
+
+    <item
+        android:id="@+id/translate"
+        android:title=""
+        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconTintMode="src_in"
+        android:icon="@drawable/ic_translate" />
+
+    <item
+        android:id="@+id/conversation"
+        android:title=""
+        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconTintMode="src_in"
+        android:icon="@drawable/ic_conversation" />
+
 </menu>

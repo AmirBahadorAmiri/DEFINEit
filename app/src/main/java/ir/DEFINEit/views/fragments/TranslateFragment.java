@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.amirbahadoramiri.logger.Logger;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,29 +40,27 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import ir.DEFINEit.R;
 import ir.DEFINEit.listener.ResponseListener;
-import ir.DEFINEit.models.TextModel;
 import ir.DEFINEit.tools.copy_helper.CopyHelper;
 import ir.DEFINEit.tools.language_manager.LanguageManager;
-import ir.DEFINEit.tools.mydb.MyDB;
 import ir.DEFINEit.tools.translate_manager.TranslateManager;
 import ir.DEFINEit.tools.tts_manager.TTsSingle;
 import ir.DEFINEit.tools.volume_manager.VolumeManager;
 import ir.DEFINEit.views.activities.ChangeLanguageActivity;
 import ir.DEFINEit.views.activities.SettingsActivity;
-import ir.DEFINEit.views.activities.TranslateHistoryActivity;
 import okhttp3.Response;
 
 public class TranslateFragment extends Fragment {
 
     public static TranslateFragment translateFragment;
 
-    AppCompatImageView fragment_translate_settings_icon, fragment_translate_history_icon, fragment_translate_reverse_icon, fragment_translate_speaker_btn, fragment_translate_copy_btn, fragment_translate_mic_btn;
+    AppCompatImageView fragment_translate_settings_icon, fragment_translate_reverse_icon, fragment_translate_speaker_btn, fragment_translate_copy_btn, fragment_translate_mic_btn;
     AppCompatTextView fragment_translate_textview;
     AppCompatEditText fragment_translate_edittext;
     MaterialButton fragment_translate_to_btn, fragment_translate_from_btn;
 
     private Observable typingObservable;
     private Disposable typingDisposable;
+    private float reverseAngle = 0f;
 
     @Nullable
     @Override
@@ -75,12 +77,12 @@ public class TranslateFragment extends Fragment {
 
     private void findViews(View view) {
         fragment_translate_settings_icon = view.findViewById(R.id.fragment_translate_settings_icon);
-        fragment_translate_history_icon = view.findViewById(R.id.fragment_translate_history_icon);
         fragment_translate_reverse_icon = view.findViewById(R.id.fragment_translate_reverse_icon);
         fragment_translate_speaker_btn = view.findViewById(R.id.fragment_translate_speaker_btn);
         fragment_translate_copy_btn = view.findViewById(R.id.fragment_translate_copy_btn);
         fragment_translate_mic_btn = view.findViewById(R.id.fragment_translate_mic_btn);
         fragment_translate_textview = view.findViewById(R.id.fragment_translate_textview);
+        fragment_translate_textview.setMovementMethod(new ScrollingMovementMethod());
         fragment_translate_edittext = view.findViewById(R.id.fragment_translate_edittext);
         fragment_translate_to_btn = view.findViewById(R.id.fragment_translate_to_btn);
         fragment_translate_from_btn = view.findViewById(R.id.fragment_translate_from_btn);
@@ -89,12 +91,11 @@ public class TranslateFragment extends Fragment {
     private void setup(View view) {
 
         fragment_translate_settings_icon.setOnClickListener(v -> startActivity(new Intent(requireContext(), SettingsActivity.class)));
-        fragment_translate_history_icon.setOnClickListener(v -> startActivity(new Intent(requireContext(), TranslateHistoryActivity.class)));
         fragment_translate_speaker_btn.setOnClickListener(v -> {
             if (!fragment_translate_textview.getText().toString().isEmpty()) {
                 if (VolumeManager.getVolume(requireContext()) == 0) {
                     Snackbar.make(v, "صدای سیستم قطع است", Snackbar.LENGTH_LONG)
-                            .setAction("افزایش صدا", n -> VolumeManager.setVolume(requireContext(), VolumeManager.getManager(requireContext()).getStreamMaxVolume(AudioManager.STREAM_MUSIC))).setActionTextColor(ContextCompat.getColor(requireContext(), R.color.blueColor)).show();
+                            .setAction("افزایش صدا", n -> VolumeManager.setVolume(requireContext(), VolumeManager.getManager(requireContext()).getStreamMaxVolume(AudioManager.STREAM_MUSIC))).setActionTextColor(ContextCompat.getColor(requireContext(), R.color.text_color)).show();
                 } else {
                     TTsSingle.initialize(requireContext(), new ResponseListener() {
                         @Override
@@ -108,7 +109,7 @@ public class TranslateFragment extends Fragment {
 
                         @Override
                         public void onFailure(Throwable throwable) {
-                            Log.d("TAG", "tts manager failure");
+                            Logger.debug("TranslateFragment", "tts manager failure");
                         }
                     });
                 }
@@ -117,6 +118,8 @@ public class TranslateFragment extends Fragment {
         fragment_translate_reverse_icon.setOnClickListener(v -> {
             LanguageManager.reverceLanguage(requireContext());
             getLanguages();
+            animateReverse();
+            animateLanguages();
             translate();
         });
 
@@ -182,6 +185,20 @@ public class TranslateFragment extends Fragment {
         fragment_translate_to_btn.setText(LanguageManager.getToLangauge(requireContext()));
     }
 
+    private void animateReverse() {
+        reverseAngle += 180f;
+        RotateAnimation animation = new RotateAnimation(reverseAngle - 180f, reverseAngle,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(300);
+        animation.setFillAfter(true);
+        fragment_translate_reverse_icon.startAnimation(animation);
+    }
+
+    private void animateLanguages() {
+        fragment_translate_from_btn.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.language_from));
+        fragment_translate_to_btn.startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.language_to));
+    }
+
     private void translate() {
         if (!Objects.requireNonNull(fragment_translate_edittext.getText()).toString().isEmpty()) {
 
@@ -208,21 +225,6 @@ public class TranslateFragment extends Fragment {
                             } else {
                                 requireActivity().runOnUiThread(() -> fragment_translate_textview.setText(translatedText.toString()));
                             }
-
-
-                            TextModel textModel = new TextModel();
-                            textModel.setText(text);
-                            textModel.setTranslation(translatedText.toString());
-                            textModel.setTranslationTime(System.currentTimeMillis());
-                            textModel.setFromLanguageCode(LanguageManager.getFromLangaugeCode(requireContext()));
-                            textModel.setToLanguageCode(LanguageManager.getToLangaugeCode(requireContext()));
-
-                            MyDB.getInstance(requireActivity()).getTextDao()
-                                    .insert(textModel)
-                                    .subscribeOn(Schedulers.io())
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe();
-
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }

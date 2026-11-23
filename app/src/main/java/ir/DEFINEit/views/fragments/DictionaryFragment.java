@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.amirbahadoramiri.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,7 @@ import ir.DEFINEit.R;
 import ir.DEFINEit.adapters.DictionaryWordAdapter;
 import ir.DEFINEit.models.WordModel;
 import ir.DEFINEit.tools.mydb.MyDB;
-import ir.DEFINEit.views.activities.DictionaryHistoryActivity;
 import ir.DEFINEit.views.activities.SettingsActivity;
-import ir.DEFINEit.views.activities.StarWordsActivity;
 
 public class DictionaryFragment extends Fragment {
 
@@ -47,7 +46,7 @@ public class DictionaryFragment extends Fragment {
     RecyclerView fragment_dictionary_recyclerview;
     private Observable typingObservable;
     private Disposable typingDisposable;
-    AppCompatImageView fragment_dictionary_settings_icon, fragment_dictionary_history_icon, fragment_dictionary_star_icon, fragment_dictionary_mic_icon;
+    AppCompatImageView fragment_dictionary_settings_icon, fragment_dictionary_mic_icon;
     AppCompatEditText fragment_dictionary_search_edittext;
 
     @Nullable
@@ -66,27 +65,23 @@ public class DictionaryFragment extends Fragment {
     private void findViews(View view) {
         fragment_dictionary_recyclerview = view.findViewById(R.id.fragment_dictionary_recyclerview);
         fragment_dictionary_settings_icon = view.findViewById(R.id.fragment_dictionary_settings_icon);
-        fragment_dictionary_history_icon = view.findViewById(R.id.fragment_dictionary_history_icon);
-        fragment_dictionary_star_icon = view.findViewById(R.id.fragment_dictionary_star_icon);
         fragment_dictionary_mic_icon = view.findViewById(R.id.fragment_dictionary_mic_icon);
         fragment_dictionary_search_edittext = view.findViewById(R.id.fragment_dictionary_search_edittext);
     }
 
     private void setup(View view) {
-        fragment_dictionary_history_icon.setOnClickListener(v -> startActivity(new Intent(requireContext(), DictionaryHistoryActivity.class)));
         fragment_dictionary_settings_icon.setOnClickListener(v -> startActivity(new Intent(requireContext(), SettingsActivity.class)));
-        fragment_dictionary_star_icon.setOnClickListener(v -> startActivity(new Intent(requireContext(), StarWordsActivity.class)));
 
-        fragment_dictionary_mic_icon.setOnClickListener(n -> {
-            fragment_dictionary_search_edittext.setText("");
-            Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "fa-IR");
-//                voiceIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true);
-
-            startActivityForResult(voiceIntent, 1002);
+        fragment_dictionary_mic_icon.setImageResource(R.drawable.ic_mic);
+        fragment_dictionary_mic_icon.setOnClickListener(v -> {
+            if (fragment_dictionary_search_edittext.getText().toString().isEmpty()) {
+                Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
+                startActivityForResult(voiceIntent, 1002);
+            } else {
+                fragment_dictionary_search_edittext.setText("");
+            }
         });
 
         wordAdapter = new DictionaryWordAdapter(wordModelList);
@@ -100,22 +95,11 @@ public class DictionaryFragment extends Fragment {
                     typingDisposable.dispose();
                 typingObservable = Observable.timer(1000, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
+                fragment_dictionary_mic_icon.setImageResource(text.isEmpty() ? R.drawable.ic_mic : R.drawable.ic_clear);
                 if (text.isEmpty()) {
                     wordModelList.clear();
                     wordAdapter.notifyDataSetChanged();
-                    fragment_dictionary_mic_icon.setImageResource(R.drawable.mic_icon_nobg);
-                    fragment_dictionary_mic_icon.setOnClickListener(n -> {
-                        fragment_dictionary_search_edittext.setText("");
-                        Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                        voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                        voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
-                        startActivityForResult(voiceIntent, 1002);
-                    });
                 } else {
-                    fragment_dictionary_mic_icon.setImageResource(R.drawable.ic_dismiss);
-                    fragment_dictionary_mic_icon.setOnClickListener(n -> {
-                        fragment_dictionary_search_edittext.setText("");
-                    });
                     typingDisposable = typingObservable
                             .subscribe(onNext -> {
                                 if (isENGLISH_CHARACTER(text)) {
@@ -128,7 +112,7 @@ public class DictionaryFragment extends Fragment {
                                                     addData(newData, false);
                                                 } else {
                                                 }
-                                            }, e -> Log.d("TAG", "err : " + e.getMessage()));
+                                            }, e -> Logger.debug("DictionaryFragment", "err : " + e.getMessage(), e));
 
                                 } else {
                                     MyDB.getInstance(requireContext()).getWordDao().readPersianWord(text)
@@ -139,7 +123,7 @@ public class DictionaryFragment extends Fragment {
                                                     addData(newData, true);
                                                 } else {
                                                 }
-                                            }, e -> Log.d("TAG", "afterTextChanged: " + e.getMessage()));
+                                            }, e -> Logger.debug("DictionaryFragment", "afterTextChanged: " + e.getMessage(), e));
                                 }
                             });
                 }
@@ -168,7 +152,6 @@ public class DictionaryFragment extends Fragment {
     }
 
     private void addData(List<WordModel> newData, boolean isPersian) {
-        wordAdapter.setPersian(isPersian);
         wordAdapter.loadData(newData);
         wordAdapter.notifyDataSetChanged();
         fragment_dictionary_recyclerview.scrollToPosition(0);

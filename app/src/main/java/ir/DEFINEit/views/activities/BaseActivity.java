@@ -1,14 +1,11 @@
 package ir.DEFINEit.views.activities;
 
-import android.content.Context;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import io.github.inflationx.viewpump.ViewPumpContextWrapper;
 import ir.DEFINEit.R;
 
 public class BaseActivity extends AppCompatActivity {
@@ -24,11 +21,6 @@ public class BaseActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(ViewPumpContextWrapper.wrap(newBase));
     }
 
 }

@@ -2,16 +2,13 @@
     <string name="app_name">DEFINEit</string>
     <string name="app_name_fa">دیفاینیت</string>
 
-    <string name="translate">مترجم</string>
-    <string name="dictionary">دیکشنری</string>
-    <string name="conversation">گفتوگو</string>
-    <string name="search_in_dictionary">جستوجوی واژه در دیکشنری</string>
-    <string name="insert_your_text">متنی که میخوای ترجمه کنی رو برام بنویس</string>
-    <string name="settings">تنظیمات</string>
-    <string name="select_lagnuage">انتخاب زبان</string>
-    <string name="starred_words">واژگان ستاره دار</string>
-    <string name="word">واژه</string>
-    <string name="dictionary_history">تاریخچه واژگان</string>
-    <string name="my_social_network">شبکه های اجتماعی ما</string>
-    <string name="translate_history">تاریخچه ترجمه</string>
+    <string name="translate">Translate</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="conversation">Conversation</string>
+    <string name="settings">Settings</string>
+    <string name="change_theme">Change Theme</string>
+    <string name="change_voice_gender">Change Voice Gender</string>
+    <string name="select_language">Choose Language</string>
+    <string name="search_hint">Write your word</string>
+    <string name="write_your_text">Write your text</string>
 </resources>

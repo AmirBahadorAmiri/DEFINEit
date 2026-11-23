@@ -23,27 +23,25 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         setViewCompat();
         findViews();
-        setup();
+        Fragment current = getSupportFragmentManager().findFragmentById(R.id.main_activity_framelayout);
+        int selectedId = R.id.dictionary;
+        if (current instanceof TranslateFragment) {
+            selectedId = R.id.translate;
+        } else if (current instanceof ConversationFragment) {
+            selectedId = R.id.conversation;
+        }
+        setup(selectedId);
+        if (current == null) {
+            changeFragment(DictionaryFragment.getDictionaryFragment());
+        }
     }
 
     private void findViews() {
         main_activity_bottom_navigation = findViewById(R.id.main_activity_bottom_navigation);
     }
 
-    private void setup() {
-        setupBottomNavigation();
-    }
-
-    public void changeFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_framelayout, fragment).commit();
-    }
-
-    public void addFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_framelayout, fragment).addToBackStack(null).commit();
-    }
-
-    public void setupBottomNavigation() {
-
+    private void setup(int selectedId) {
+        main_activity_bottom_navigation.setItemSelected(selectedId, true);
         main_activity_bottom_navigation.setOnItemSelectedListener(id -> {
             if (id == R.id.dictionary) {
                 changeFragment(DictionaryFragment.getDictionaryFragment());
@@ -55,8 +53,14 @@ public class MainActivity extends BaseActivity {
                 changeFragment(ConversationFragment.getConversationFragment());
             }
         });
-        main_activity_bottom_navigation.setItemSelected(R.id.dictionary, true);
+    }
 
+    public void changeFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_framelayout, fragment).commit();
+    }
+
+    public void addFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_framelayout, fragment).addToBackStack(null).commit();
     }
 
 }

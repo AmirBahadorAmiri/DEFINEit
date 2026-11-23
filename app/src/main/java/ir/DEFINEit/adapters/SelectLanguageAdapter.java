@@ -37,7 +37,7 @@ public class SelectLanguageAdapter extends RecyclerView.Adapter<SelectLanguageAd
 
     @Override
     public void onBindViewHolder(@NonNull MainHolder holder, int position) {
-        holder.item_select_language_name.setText(langModelList.get(position).getShowName());
+        holder.item_select_language_name.setText(langModelList.get(position).getName());
         AssetsImageLoader.load(holder.itemView.getContext(), ("country/" + langModelList.get(position).getImage()), holder.item_select_language_image);
         holder.itemView.setOnClickListener(v -> {
             if (((ChangeLanguageActivity) v.getContext()).isFrom) {

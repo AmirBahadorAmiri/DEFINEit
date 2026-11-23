@@ -4,40 +4,42 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageBackground">
+    android:background="@color/page_background">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/activity_change_language_back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_icon" />
+        app:srcCompat="@drawable/ic_back" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:text="@string/select_lagnuage"
-        android:textColor="@color/textColor"
-        android:textSize="24sp"
+        android:layout_marginLeft="16dp"
+        android:text="@string/select_language"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/HeaderText"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/activity_change_language_back_btn"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/activity_change_language_back_btn"
         app:layout_constraintTop_toTopOf="@id/activity_change_language_back_btn" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_change_language_recyclerview"
         android:layout_width="0dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
         android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

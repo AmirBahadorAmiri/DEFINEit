@@ -4,12 +4,11 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="pageBackground">#191A1F</color>
-    <color name="semiBackground">#2C2F42</color>
-    <color name="hintColor">#919191</color>
-    <color name="textColor">#FAFAFA</color>
-    <color name="onDarkColor">#FAFAFA</color>
-    <color name="blueColor">#258CF3</color>
-    <color name="greenColor">#00C68B</color>
+    <color name="page_background">#353839</color>
+    <color name="on_page_background">#292929</color>
+    <color name="text_color">#F6824C</color>
+    <color name="hint_text_color">#F8D89C</color>
+    <color name="primary_color">#F6824C</color>
+    <color name="secondary_color">#7C6CFF</color>
 
 </resources>

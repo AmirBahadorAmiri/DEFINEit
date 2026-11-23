@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageBackground"
+    android:background="@color/page_background"
     tools:context="ir.DEFINEit.views.activities.MainActivity">
 
     <FrameLayout
@@ -13,23 +13,35 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:animateLayoutChanges="true"
-        app:layout_constraintBottom_toTopOf="@id/main_activity_bottom_navigation"
+        app:layout_constraintBottom_toTopOf="@id/main_activity_bottom_card"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ismaeldivita.chipnavigation.ChipNavigationBar
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        app:cnb_radius="16dp"
-        android:layout_marginBottom="8dp"
-        android:id="@+id/main_activity_bottom_navigation"
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/main_activity_bottom_card"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.7"
         android:layout_height="60dp"
-        android:background="@drawable/round_background_16dp"
-        app:cnb_menuResource="@menu/activity_main_bottom_nav_item"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/on_page_background"
+        app:cardCornerRadius="32dp"
+        app:strokeColor="@android:color/transparent"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent">
+
+        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+            android:id="@+id/main_activity_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cnb_iconSize="24dp"
+            app:cnb_menuResource="@menu/activity_main_bottom_nav_item"
+            app:cnb_radius="32dp" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

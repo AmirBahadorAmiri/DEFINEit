@@ -4,50 +4,79 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pageBackground">
+    android:background="@color/page_background">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/activity_settings_back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_icon" />
+        app:srcCompat="@drawable/ic_back" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
         android:text="@string/settings"
-        android:textColor="@color/textColor"
-        android:textSize="24sp"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/HeaderText"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/activity_settings_back_btn"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/activity_settings_back_btn"
         app:layout_constraintTop_toTopOf="@id/activity_settings_back_btn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/activity_settings_theme_btn"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="24dp"
+        android:text="@string/change_theme"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/LargeText"
+        android:textStyle="normal"
+        app:backgroundTint="@color/on_page_background"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_theme"
+        app:iconPadding="16dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/primary_color"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_settings_back_btn"
+        app:rippleColor="@color/page_background" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/activity_settings_voice_btn"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="64dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:gravity="center_vertical"
-        android:text="تنظیمات صدا"
-        android:textColor="@color/textColor"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/semiBackground"
-        app:cornerRadius="8dp"
+        android:paddingLeft="24dp"
+        android:text="@string/change_voice_gender"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/LargeText"
+        android:textStyle="normal"
+        app:backgroundTint="@color/on_page_background"
+        app:cornerRadius="32dp"
+        app:icon="@drawable/ic_gender"
+        app:iconPadding="16dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/primary_color"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_settings_back_btn"
-        app:rippleColor="@color/pageBackground" />
+        app:layout_constraintTop_toBottomOf="@id/activity_settings_theme_btn"
+        app:rippleColor="@color/page_background" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
