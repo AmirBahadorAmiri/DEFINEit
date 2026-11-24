@@ -1,5 +1,7 @@
 package ir.DEFINEit.tools.iokhttp;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
 import ir.DEFINEit.listener.ResponseListener;
@@ -16,7 +18,7 @@ public class IOkHttp {
     private OkHttpClient client;
     public static final String TRANSLATE_URL = "https://translate.googleapis.com/translate_a/single";
 
-    public IOkHttp post(String url, RequestBody body, ResponseListener responseListener) {
+    public void post(String url, RequestBody body, ResponseListener responseListener) {
         if (client == null)
             client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -25,12 +27,12 @@ public class IOkHttp {
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 responseListener.onFailure(e);
             }
 
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
                 if (response.isSuccessful()) {
                     responseListener.onSuccess(response);
                 } else {
@@ -38,10 +40,9 @@ public class IOkHttp {
                 }
             }
         });
-        return this;
     }
 
-    public IOkHttp get(HttpUrl url, ResponseListener responseListener) {
+    public void get(HttpUrl url, ResponseListener responseListener) {
         if (client == null)
             client = new OkHttpClient();
 
@@ -52,12 +53,12 @@ public class IOkHttp {
 
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 responseListener.onFailure(e);
             }
 
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(@NonNull Call call, @NonNull Response response) {
                 if (response.isSuccessful()) {
                     responseListener.onSuccess(response);
                 } else {
@@ -65,7 +66,6 @@ public class IOkHttp {
                 }
             }
         });
-        return this;
     }
 
 }

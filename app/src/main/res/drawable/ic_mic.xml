@@ -6,12 +6,12 @@
     <group android:translateX="-2.332" android:translateY="-2">
         <path
             android:pathData="M12,15h0a4,4,0,0,1-4-4V6a4,4,0,0,1,4-4h0a4,4,0,0,1,4,4v5A4,4,0,0,1,12,15Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.332" android:translateY="-2">
         <path
             android:pathData="M19.057,13.016a1.468,1.468,0,0,0-1.716.711,5.994,5.994,0,0,1-10.681,0,1.468,1.468,0,0,0-1.716-.711h0a1.5,1.5,0,0,0-.922,2.135A9,9,0,0,0,10,19.755V20a2,2,0,0,0,4,0v-.245a9,9,0,0,0,5.979-4.6A1.5,1.5,0,0,0,19.057,13.016Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
 </vector>

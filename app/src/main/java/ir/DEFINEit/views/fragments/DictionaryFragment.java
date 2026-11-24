@@ -1,6 +1,7 @@
 package ir.DEFINEit.views.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -9,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +36,7 @@ import ir.DEFINEit.R;
 import ir.DEFINEit.adapters.DictionaryWordAdapter;
 import ir.DEFINEit.models.WordModel;
 import ir.DEFINEit.tools.mydb.MyDB;
+import ir.DEFINEit.views.activities.MainActivity;
 import ir.DEFINEit.views.activities.SettingsActivity;
 
 public class DictionaryFragment extends Fragment {
@@ -78,7 +81,11 @@ public class DictionaryFragment extends Fragment {
                 Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
                 voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
-                startActivityForResult(voiceIntent, 1002);
+                try {
+                    startActivityForResult(voiceIntent, 1002);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(requireContext(), "بسته نرم افزار تشخیص صدا نصب نشده است", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 fragment_dictionary_search_edittext.setText("");
             }
@@ -87,6 +94,16 @@ public class DictionaryFragment extends Fragment {
         wordAdapter = new DictionaryWordAdapter(wordModelList);
         fragment_dictionary_recyclerview.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         fragment_dictionary_recyclerview.setAdapter(wordAdapter);
+        fragment_dictionary_recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 8) {
+                    ((MainActivity) requireActivity()).setBottomNavigationVisible(false);
+                } else if (dy < -8) {
+                    ((MainActivity) requireActivity()).setBottomNavigationVisible(true);
+                }
+            }
+        });
         fragment_dictionary_search_edittext.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable editable) {
@@ -142,6 +159,12 @@ public class DictionaryFragment extends Fragment {
 
     private boolean isENGLISH_CHARACTER(String str) {
         return ENGLISH_CHARACTER.matcher(str).find();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) requireActivity()).setBottomNavigationVisible(true);
     }
 
     @Override

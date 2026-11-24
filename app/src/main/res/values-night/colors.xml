@@ -4,11 +4,12 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="page_background">#353839</color>
-    <color name="on_page_background">#292929</color>
-    <color name="text_color">#F6824C</color>
-    <color name="hint_text_color">#F8D89C</color>
-    <color name="primary_color">#F6824C</color>
-    <color name="secondary_color">#7C6CFF</color>
+    <color name="page_background">#151515</color>
+    <color name="on_page_background">#252525</color>
+    <color name="text_color">#FFFFFF</color>
+    <color name="hint_text_color">#959AA0</color>
+    <color name="primary_color">#FFFFFF</color>
+    <color name="bottom_navigation_background_color">#202020</color>
+    <color name="bottom_navigation_icon_color">#FFFFFF</color>
 
 </resources>

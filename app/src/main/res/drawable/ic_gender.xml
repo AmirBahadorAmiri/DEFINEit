@@ -6,22 +6,22 @@
     <group android:translateX="-0.909" android:translateY="-0.909">
         <path
             android:pathData="M9.091,7.273a5.446,5.446,0,0,0-4.441,8.61L3.182,17.351l-.721-.721a.909.909,0,0,0-1.285,1.285l.721.721-.721.721a.909.909,0,1,0,1.285,1.285l.721-.721.721.721a.909.909,0,1,0,1.285-1.285l-.721-.721,1.468-1.468a5.452,5.452,0,1,0,3.155-9.9Zm0,9.091a3.636,3.636,0,1,1,3.636-3.636A3.64,3.64,0,0,1,9.091,16.363Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
     <group android:translateX="-0.909" android:translateY="-0.909">
         <path
             android:pathData="M20,5.454a.909.909,0,0,1-.643-.266L16.63,2.461A.909.909,0,0,1,17.273.909H20a.909.909,0,0,1,.909.909V4.545A.908.908,0,0,1,20,5.454Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-0.909" android:translateY="-0.909">
         <path
             android:pathData="M16.363,6.364a.909.909,0,0,1-.643-1.552l2.727-2.727A.909.909,0,0,1,19.733,3.37L17.006,6.1A.907.907,0,0,1,16.363,6.364Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-0.909" android:translateY="-0.909">
         <path
             android:pathData="M12.727,3.636a5.451,5.451,0,0,0-.473,10.882,3.6,3.6,0,0,0,.473-1.791,3.648,3.648,0,1,1,1.8-.482c.009.164.018.318.018.482a5.328,5.328,0,0,1-.236,1.582A5.453,5.453,0,0,0,12.727,3.636Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
 </vector>

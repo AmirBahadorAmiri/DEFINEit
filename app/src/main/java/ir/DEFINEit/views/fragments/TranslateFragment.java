@@ -1,6 +1,7 @@
 package ir.DEFINEit.views.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import ir.DEFINEit.tools.translate_manager.TranslateManager;
 import ir.DEFINEit.tools.tts_manager.TTsSingle;
 import ir.DEFINEit.tools.volume_manager.VolumeManager;
 import ir.DEFINEit.views.activities.ChangeLanguageActivity;
+import ir.DEFINEit.views.activities.MainActivity;
 import ir.DEFINEit.views.activities.SettingsActivity;
 import okhttp3.Response;
 
@@ -53,7 +55,8 @@ public class TranslateFragment extends Fragment {
 
     public static TranslateFragment translateFragment;
 
-    AppCompatImageView fragment_translate_settings_icon, fragment_translate_reverse_icon, fragment_translate_speaker_btn, fragment_translate_copy_btn, fragment_translate_mic_btn;
+    AppCompatImageView fragment_translate_settings_icon, fragment_translate_reverse_icon,
+            fragment_translate_speaker_btn, fragment_translate_copy_btn, fragment_translate_mic_btn;
     AppCompatTextView fragment_translate_textview;
     AppCompatEditText fragment_translate_edittext;
     MaterialButton fragment_translate_to_btn, fragment_translate_from_btn;
@@ -130,16 +133,16 @@ public class TranslateFragment extends Fragment {
             }
         });
 
-//        fragment_translate_mic_btn.setOnClickListener(v -> {
-//            Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-//            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-////                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-//            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, LanguageManager.getFromLangaugeCode(requireContext()));
-////                voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "fa-IR");
-////                voiceIntent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true);
-//
-//            startActivityForResult(voiceIntent, 1002);
-//        });
+        fragment_translate_mic_btn.setOnClickListener(v -> {
+            Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, LanguageManager.getFromLangaugeCode(requireContext()));
+            try {
+                startActivityForResult(voiceIntent, 1002);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(requireContext(), "بسته نرم افزار تشخیص صدا نصب نشده است", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         fragment_translate_to_btn.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ChangeLanguageActivity.class);
@@ -226,7 +229,7 @@ public class TranslateFragment extends Fragment {
                                 requireActivity().runOnUiThread(() -> fragment_translate_textview.setText(translatedText.toString()));
                             }
                         } catch (Exception e) {
-                            throw new RuntimeException(e);
+                            Logger.debug(e);
                         }
                     }
                 }
@@ -236,7 +239,7 @@ public class TranslateFragment extends Fragment {
 //                fragment_translate_scrollview.setVisibility(View.INVISIBLE);
 //                fragment_translate_copy_btn.setVisibility(View.INVISIBLE);
 //                share_text.setVisibility(View.INVISIBLE);
-                    Toast.makeText(requireContext(), "متاسفانه مشکلی در برقراری ارتباط پیش آمد", Toast.LENGTH_SHORT).show();
+                    requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "متاسفانه مشکلی در برقراری ارتباط پیش آمد", Toast.LENGTH_SHORT).show());
                 }
             });
 
@@ -247,6 +250,7 @@ public class TranslateFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getLanguages();
+        ((MainActivity) requireActivity()).setBottomNavigationVisible(true);
     }
 
     @Override

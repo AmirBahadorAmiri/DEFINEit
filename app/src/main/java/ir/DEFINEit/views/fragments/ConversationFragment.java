@@ -1,6 +1,7 @@
 package ir.DEFINEit.views.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -20,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amirbahadoramiri.logger.Logger;
 import com.google.android.material.button.MaterialButton;
 
 import org.json.JSONArray;
@@ -35,6 +37,7 @@ import ir.DEFINEit.models.ConversationModel;
 import ir.DEFINEit.tools.language_manager.LanguageManager;
 import ir.DEFINEit.tools.translate_manager.TranslateManager;
 import ir.DEFINEit.views.activities.ChangeLanguageActivity;
+import ir.DEFINEit.views.activities.MainActivity;
 import ir.DEFINEit.views.activities.SettingsActivity;
 import okhttp3.Response;
 
@@ -107,6 +110,7 @@ public class ConversationFragment extends Fragment {
         activity_conversation_send_from.setOnClickListener(v -> {
 
             String text = Objects.requireNonNull(activity_conversation_edittext.getText()).toString();
+            if (text.trim().isEmpty()) return;
             String from = LanguageManager.getFromLangaugeCode(requireContext());
             String to = LanguageManager.getToLangaugeCode(requireContext());
 
@@ -120,6 +124,7 @@ public class ConversationFragment extends Fragment {
         activity_conversation_send_to.setOnClickListener(v -> {
 
             String text = Objects.requireNonNull(activity_conversation_edittext.getText()).toString();
+            if (text.trim().isEmpty()) return;
             String from = LanguageManager.getToLangaugeCode(requireContext());
             String to = LanguageManager.getFromLangaugeCode(requireContext());
 
@@ -137,13 +142,27 @@ public class ConversationFragment extends Fragment {
         layoutManager.setStackFromEnd(true); // شروع از انتها
         activity_conversation_recyclerview.setLayoutManager(layoutManager);
         activity_conversation_recyclerview.setAdapter(conversationAdapter);
+        activity_conversation_recyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 8) {
+                    ((MainActivity) requireActivity()).setBottomNavigationVisible(false);
+                } else if (dy < -8) {
+                    ((MainActivity) requireActivity()).setBottomNavigationVisible(true);
+                }
+            }
+        });
     }
 
     private void startVoice(String locale) {
         Intent voiceIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         voiceIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale);
-        startActivityForResult(voiceIntent, 1002);
+        try {
+            startActivityForResult(voiceIntent, 1002);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(requireContext(), "بسته نرم افزار تشخیص صدا نصب نشده است", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void translate(String text, String fromLanguage, String toLanguage) {
@@ -172,7 +191,7 @@ public class ConversationFragment extends Fragment {
                                 activity_conversation_recyclerview.scrollToPosition((conversationModelList.size() - 1));
                             });
                         } catch (Exception e) {
-                            throw new RuntimeException(e);
+                            Logger.debug(e);
                         }
                     }
                 }
@@ -182,7 +201,7 @@ public class ConversationFragment extends Fragment {
 //                fragment_translate_scrollview.setVisibility(View.INVISIBLE);
 //                fragment_translate_copy_btn.setVisibility(View.INVISIBLE);
 //                share_text.setVisibility(View.INVISIBLE);
-                    Toast.makeText(requireContext(), "متاسفانه مشکلی در برقراری ارتباط پیش آمد", Toast.LENGTH_SHORT).show();
+                    requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "متاسفانه مشکلی در برقراری ارتباط پیش آمد", Toast.LENGTH_SHORT).show());
                 }
             };
 
@@ -195,6 +214,7 @@ public class ConversationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         getLanguages();
+        ((MainActivity) requireActivity()).setBottomNavigationVisible(true);
     }
 
     private void getLanguages() {

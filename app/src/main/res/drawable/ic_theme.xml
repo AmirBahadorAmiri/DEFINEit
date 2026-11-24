@@ -6,55 +6,55 @@
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M22.105,12.632v1.053H7.368V12.632a2.111,2.111,0,0,1,2.105-2.105H20A2.111,2.111,0,0,1,22.105,12.632Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M22.105,12.632v8.421A2.111,2.111,0,0,1,20,23.158H9.474a2.111,2.111,0,0,1-2.105-2.105V12.632Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M12.281,20h-1.4a1.4,1.4,0,0,1-1.4-1.4v-1.4a1.4,1.4,0,0,1,1.4-1.4h1.4a1.4,1.4,0,0,1,1.4,1.4v1.4A1.4,1.4,0,0,1,12.281,20Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M18.6,20h-1.4a1.4,1.4,0,0,1-1.4-1.4v-1.4a1.4,1.4,0,0,1,1.4-1.4h1.4a1.4,1.4,0,0,1,1.4,1.4v1.4A1.4,1.4,0,0,1,18.6,20Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M17.895,5.263V6.316H3.158V5.263A2.111,2.111,0,0,1,5.263,3.158H15.789A2.111,2.111,0,0,1,17.895,5.263Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M3.158,6.316v7.368a2.111,2.111,0,0,0,2.105,2.105H7.368V12.632H6.663a1.406,1.406,0,0,1-1.4-1.4V9.821a1.406,1.406,0,0,1,1.4-1.4H8.074a1.406,1.406,0,0,1,1.4,1.4v.705h2.105V9.821a1.406,1.406,0,0,1,1.4-1.4h1.411a1.406,1.406,0,0,1,1.4,1.4v.705h2.105V6.316Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M9.474,9.821v.705a2.111,2.111,0,0,0-2.105,2.105H6.663a1.406,1.406,0,0,1-1.4-1.4V9.821a1.406,1.406,0,0,1,1.4-1.4H8.074A1.406,1.406,0,0,1,9.474,9.821Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M15.789,9.821v.705H11.579V9.821a1.406,1.406,0,0,1,1.4-1.4h1.411A1.406,1.406,0,0,1,15.789,9.821Z"
-            android:fillColor="#F6824C"
+            android:fillColor="#138bdb"
             android:fillAlpha="0.35" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M12.281,20h-1.4a1.4,1.4,0,0,1-1.4-1.4v-1.4a1.4,1.4,0,0,1,1.4-1.4h1.4a1.4,1.4,0,0,1,1.4,1.4v1.4A1.4,1.4,0,0,1,12.281,20Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
     <group android:translateX="-2.632" android:translateY="-3.158">
         <path
             android:pathData="M18.6,20h-1.4a1.4,1.4,0,0,1-1.4-1.4v-1.4a1.4,1.4,0,0,1,1.4-1.4h1.4a1.4,1.4,0,0,1,1.4,1.4v1.4A1.4,1.4,0,0,1,18.6,20Z"
-            android:fillColor="#F6824C" />
+            android:fillColor="#138bdb" />
     </group>
 </vector>

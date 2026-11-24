@@ -10,8 +10,8 @@
         android:id="@+id/fragment_translate_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
         android:text="@string/translate"
         android:textColor="@color/text_color"
         android:textSize="@dimen/HeaderText"
@@ -23,24 +23,25 @@
         android:id="@+id/fragment_translate_settings_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
         android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@id/fragment_translate_title"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/fragment_translate_title"
-        app:srcCompat="@drawable/ic_settings" />
+        app:srcCompat="@drawable/ic_settings"
+        app:tint="@color/primary_color" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_translate_from_btn"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginRight="8dp"
         android:textColor="@color/text_color"
         android:textSize="@dimen/LargeText"
-        android:textStyle="normal"
         app:backgroundTint="@color/on_page_background"
         app:cornerRadius="32dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -53,30 +54,31 @@
         android:id="@+id/fragment_translate_reverse_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="6dp"
         android:background="@drawable/bg_card"
         android:clickable="true"
         android:focusable="true"
         android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_translate_from_btn"
         app:layout_constraintLeft_toRightOf="@id/fragment_translate_from_btn"
         app:layout_constraintRight_toLeftOf="@id/fragment_translate_to_btn"
-        app:layout_constraintTop_toBottomOf="@id/fragment_translate_title"
-        app:srcCompat="@drawable/ic_reverse" />
+        app:layout_constraintTop_toTopOf="@id/fragment_translate_from_btn"
+        app:srcCompat="@drawable/ic_reverse"
+        app:tint="@color/primary_color" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_translate_to_btn"
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginRight="24dp"
         android:textColor="@color/text_color"
         android:textSize="@dimen/LargeText"
-        android:textStyle="normal"
         app:backgroundTint="@color/on_page_background"
         app:cornerRadius="32dp"
+        app:layout_constraintBottom_toBottomOf="@id/fragment_translate_from_btn"
         app:layout_constraintLeft_toRightOf="@id/fragment_translate_reverse_icon"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_translate_title"
+        app:layout_constraintTop_toTopOf="@id/fragment_translate_from_btn"
         app:rippleColor="@color/page_background"
         tools:text="English" />
 
@@ -84,22 +86,22 @@
         android:id="@+id/fragment_translate_source_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="32dp"
         app:cardBackgroundColor="@color/on_page_background"
         app:cardCornerRadius="32dp"
-        app:strokeColor="@android:color/transparent"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toTopOf="@id/fragment_translate_result_card"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_translate_from_btn"
-        app:layout_constraintVertical_weight="1" >
+        app:layout_constraintVertical_weight="1"
+        app:strokeWidth="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/fragment_translate_mic_btn"
@@ -110,9 +112,10 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:srcCompat="@drawable/ic_mic" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_mic"
+                app:tint="@color/primary_color" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_translate_edittext"
@@ -122,17 +125,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="24dp"
                 android:layout_marginBottom="24dp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_translate_mic_btn"
                 android:background="@android:color/transparent"
                 android:gravity="top"
                 android:hint="@string/write_your_text"
                 android:textColor="@color/text_color"
                 android:textColorHint="@color/hint_text_color"
                 android:textSize="@dimen/LargeText"
-                android:textStyle="normal" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_translate_mic_btn" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -142,35 +144,37 @@
         android:id="@+id/fragment_translate_result_card"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="80dp"
         app:cardBackgroundColor="@color/on_page_background"
         app:cardCornerRadius="32dp"
         app:cardElevation="0dp"
-        app:strokeColor="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fragment_translate_source_card"
-        app:layout_constraintVertical_weight="1">
+        app:layout_constraintVertical_weight="1"
+        app:strokeWidth="0dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/fragment_translate_copy_btn"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="24dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_copy" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_copy"
+                app:tint="@color/primary_color" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/fragment_translate_speaker_btn"
@@ -180,25 +184,31 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:focusable="true"
-                app:srcCompat="@drawable/ic_speaker" />
+                app:layout_constraintBottom_toBottomOf="@id/fragment_translate_copy_btn"
+                app:layout_constraintLeft_toRightOf="@id/fragment_translate_copy_btn"
+                app:layout_constraintTop_toTopOf="@id/fragment_translate_copy_btn"
+                app:srcCompat="@drawable/ic_speaker"
+                app:tint="@color/primary_color" />
 
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintTop_toBottomOf="@id/fragment_translate_copy_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/fragment_translate_textview"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="top"
+                android:scrollbarStyle="outsideInset"
+                android:scrollbars="vertical"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/LargeText" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/fragment_translate_textview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginBottom="24dp"
-            android:gravity="right|top"
-            android:fadeScrollbars="false"
-            android:scrollbarStyle="outsideInset"
-            android:scrollbars="vertical"
-            android:textColor="@color/text_color"
-            android:textSize="@dimen/LargeText"
-            android:textStyle="normal" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

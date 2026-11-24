@@ -3,15 +3,16 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <group android:translateX="-1.799" android:translateY="-2.399">
-        <path
-            android:pathData="M12.145,16.944l8.4-8.4a3.6,3.6,0,1,0-5.091-5.091l-8.4,8.4a3.6,3.6,0,0,0,5.091,5.091Z"
-            android:fillColor="#F6824C"
-            android:fillAlpha="0.35" />
-    </group>
-    <group android:translateX="-1.799" android:translateY="-2.399">
-        <path
-            android:pathData="M7.054,16.944l8.4,8.4a3.6,3.6,0,0,0,5.091-5.091l-8.4-8.4a3.6,3.6,0,1,0-5.091,5.091Z"
-            android:fillColor="#F6824C" />
-    </group>
+  <group>
+    <clip-path
+        android:pathData="M0,0h24v24h-24z"/>
+    <path
+        android:pathData="M10.74,13.938l6.4,-6.4A2.742,2.742 0,0 0,13.261 3.662L6.861,10.062a2.742,2.742 0,1 0,3.877 3.877Z"
+        android:strokeAlpha="0.35"
+        android:fillColor="#138bdb"
+        android:fillAlpha="0.35"/>
+    <path
+        android:pathData="M6.861,13.938l6.4,6.4A2.742,2.742 0,0 0,17.138 16.459l-6.4,-6.4A2.742,2.742 0,0 0,6.861 13.938Z"
+        android:fillColor="#138bdb"/>
+  </group>
 </vector>

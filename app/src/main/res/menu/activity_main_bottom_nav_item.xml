@@ -5,21 +5,21 @@
     <item
         android:id="@+id/dictionary"
         android:title=""
-        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconColor="@color/bottom_navigation_icon_color"
         app:cnb_iconTintMode="src_in"
         android:icon="@drawable/ic_search" />
 
     <item
         android:id="@+id/translate"
         android:title=""
-        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconColor="@color/bottom_navigation_icon_color"
         app:cnb_iconTintMode="src_in"
         android:icon="@drawable/ic_translate" />
 
     <item
         android:id="@+id/conversation"
         android:title=""
-        app:cnb_iconColor="@color/primary_color"
+        app:cnb_iconColor="@color/bottom_navigation_icon_color"
         app:cnb_iconTintMode="src_in"
         android:icon="@drawable/ic_conversation" />
 

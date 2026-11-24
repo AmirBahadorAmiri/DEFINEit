@@ -11,7 +11,7 @@
     app:cardCornerRadius="32dp"
     app:cardElevation="0dp"
     app:rippleColor="@color/page_background"
-    app:strokeColor="@android:color/transparent">
+    app:strokeWidth="0dp" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,11 +21,11 @@
             android:id="@+id/dictionary_word_item_from"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginRight="8dp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/LargeText"
-            android:textStyle="normal"
+            android:gravity="left"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/dictionary_word_item_to"
@@ -37,11 +37,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginRight="16dp"
             android:gravity="right"
             android:textColor="@color/text_color"
             android:textSize="@dimen/LargeText"
-            android:textStyle="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/dictionary_word_item_from"
             app:layout_constraintRight_toRightOf="parent"
