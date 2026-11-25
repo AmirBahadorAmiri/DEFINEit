@@ -3,6 +3,8 @@ package ir.DEFINEit.models;
 public class ConversationModel {
     private String text, languageCode;
     private int viewType;
+    private boolean thinking, failed;
+    private String sourceText, fromLanguage, toLanguage;
 
     public ConversationModel() {
     }
@@ -35,5 +37,39 @@ public class ConversationModel {
 
     public void setViewType(int viewType) {
         this.viewType = viewType;
+    }
+
+    public boolean isThinking() {
+        return thinking;
+    }
+
+    public void setThinking(boolean thinking) {
+        this.thinking = thinking;
+    }
+
+    public boolean isFailed() {
+        return failed;
+    }
+
+    public void setFailed(boolean failed) {
+        this.failed = failed;
+    }
+
+    public String getSourceText() {
+        return sourceText;
+    }
+
+    public String getFromLanguage() {
+        return fromLanguage;
+    }
+
+    public String getToLanguage() {
+        return toLanguage;
+    }
+
+    public void setTranslationRequest(String sourceText, String fromLanguage, String toLanguage) {
+        this.sourceText = sourceText;
+        this.fromLanguage = fromLanguage;
+        this.toLanguage = toLanguage;
     }
 }

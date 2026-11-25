@@ -9,3 +9,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+/adobe xd/screenshots/
+/key_store/

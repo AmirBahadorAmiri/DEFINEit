@@ -13,6 +13,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amirbahadoramiri.logger.Logger;
+import com.github.amirbahadoramiri.telegramdialog.TelegramColors;
+import com.github.amirbahadoramiri.telegramdialog.TelegramPopupMenu;
+import com.github.amirbahadoramiri.telegramdialog.direction.DialogDirection;
+import com.github.amirbahadoramiri.telegramdialog.listeners.OnMenuListener;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -28,9 +32,15 @@ import okhttp3.Response;
 public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapter.MainHolder> {
 
     List<ConversationModel> conversationModelList;
+    private final OnRetryListener retryListener;
 
-    public ConversationAdapter(List<ConversationModel> conversationModelList) {
+    public interface OnRetryListener {
+        void onRetry(int position);
+    }
+
+    public ConversationAdapter(List<ConversationModel> conversationModelList, OnRetryListener retryListener) {
         this.conversationModelList = conversationModelList;
+        this.retryListener = retryListener;
     }
 
     @NonNull
@@ -48,6 +58,22 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
     }
 
     @Override
+    public void onBindViewHolder(@NonNull MainHolder holder, int position, @NonNull List<Object> payloads) {
+        if (!payloads.isEmpty() && "typewriter".equals(payloads.get(0))) {
+            holder.bindView(position);
+            holder.typeText(conversationModelList.get(position).getText());
+        } else {
+            super.onBindViewHolder(holder, position, payloads);
+        }
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull MainHolder holder) {
+        holder.cancelTypewriter();
+        super.onViewRecycled(holder);
+    }
+
+    @Override
     public int getItemViewType(int position) {
         return conversationModelList.get(position).getViewType();
     }
@@ -61,6 +87,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
         AppCompatTextView conversation_item_text;
         AppCompatImageView conversation_item_copy, conversation_item_speaker;
+        Runnable typeRunnable;
 
         public MainHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,7 +97,12 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
         }
 
         public void bindView(int position) {
-            conversation_item_text.setText(conversationModelList.get(position).getText());
+            ConversationModel model = conversationModelList.get(position);
+            boolean thinking = model.isThinking();
+            conversation_item_text.setText(thinking ? "Thinking..." : model.getText());
+            conversation_item_copy.setVisibility(thinking ? View.GONE : View.VISIBLE);
+            conversation_item_speaker.setVisibility(thinking ? View.GONE : View.VISIBLE);
+            itemView.setOnClickListener(model.isFailed() ? v -> showRetryPopup(v, position) : null);
             conversation_item_copy.setOnClickListener(v -> {
                 CopyHelper.initialize(itemView.getContext());
                 CopyHelper.insert(conversationModelList.get(position).getText());
@@ -97,6 +129,51 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
                     });
                 }
             });
+        }
+
+        void showRetryPopup(View anchor, int position) {
+            new TelegramPopupMenu(anchor.getContext(), anchor)
+                    .setCardRadius(16)
+                    .setWidth(180)
+                    .setDirection(DialogDirection.LTR)
+                    .setCardBackgroundColor(ContextCompat.getColor(anchor.getContext(), R.color.on_page_background))
+                    .setItemTextColor(TelegramColors.getTextColor(anchor.getContext()))
+                    .setItemIconTint(ContextCompat.getColor(anchor.getContext(), R.color.primary_color))
+                    .addItem(R.drawable.ic_reverse, "Retry")
+                    .setOnClickListener(new OnMenuListener() {
+                        @Override
+                        public void onItemSelected(int itemPosition, String itemText) {
+                            retryListener.onRetry(position);
+                        }
+                    })
+                    .show();
+        }
+
+        void typeText(String text) {
+            cancelTypewriter();
+            final int targetPosition = getBindingAdapterPosition();
+            if (targetPosition == RecyclerView.NO_POSITION) {
+                conversation_item_text.setText(text);
+                return;
+            }
+            conversation_item_text.setText("");
+            final int delay = Math.max(4, Math.min(30, 900 / Math.max(1, text.length())));
+            final int[] index = {0};
+            typeRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (getBindingAdapterPosition() != targetPosition) return;
+                    if (index[0] < text.length()) {
+                        conversation_item_text.append(String.valueOf(text.charAt(index[0]++)));
+                        itemView.postDelayed(this, delay);
+                    }
+                }
+            };
+            itemView.postDelayed(typeRunnable, delay);
+        }
+
+        void cancelTypewriter() {
+            if (typeRunnable != null) itemView.removeCallbacks(typeRunnable);
         }
     }
 }

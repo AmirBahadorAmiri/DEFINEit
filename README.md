@@ -1,140 +1,103 @@
-# DEFINEit
-
-> 📖 [نسخه فارسی](./README.fa.md)
-
-An Android translation app powered by **Google Translate**, with a built-in **Persian (Farsi) dictionary** and a two-way **Conversation** mode.
-
-[![Android](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](https://developer.android.com/)
-[![Java](https://img.shields.io/badge/Language-Java-orange?logo=java&logoColor=white)](https://www.java.com/)
-[![Min SDK](https://img.shields.io/badge/minSdk-24-blue)](./app/build.gradle)
-[![Version](https://img.shields.io/badge/version-2025.11.11-purple)](./app/build.gradle)
-[![Package](https://img.shields.io/badge/package-ir.DEFINEit-lightgrey)](https://myket.ir/app/ir.DEFINEit)
-
-## 📥 Download
-
-Get the latest version from Myket:
-
-**➡️ [Download DEFINEit on Myket](https://myket.ir/app/ir.DEFINEit)**
-
-```text
-https://myket.ir/app/ir.DEFINEit
-```
-
-## ✨ Features
-
-### 🌍 Translator
-- Translation powered by Google Translate
-- Support for many source and target languages
-- Auto-translate while typing (with debounce)
-- Swap source / target languages with one tap
-- Language picker screen (`ChangeLanguageActivity`)
-- Translation history saved locally (`TranslateHistoryActivity`)
-- Copy translated text to clipboard
-- Text-to-Speech (TTS) playback of translations
-- Volume-level check with Snackbar hint
-
-### 📚 Persian Dictionary
-- Built-in offline English ↔ Persian word database (Room)
-- Fast live search (English and Persian)
-- Detailed word view (`ShowWordActivity`)
-- Dictionary search history (`DictionaryHistoryActivity`)
-- Starred / favorite words (`StarWordsActivity`)
-- Voice input for dictionary search
-
-### 💬 Conversation
-- Two-way chat-style translation for real conversations
-- Separate send button for each side (each language)
-- Voice input via Android Speech Recognizer
-- Quick language swap
-- Auto-scroll chat list
-
-### ⚙️ Extras
-- Material Design UI with bottom navigation (`chip-navigation-bar`)
-- Persian font support (Calligraphy + ViewPump)
-- Settings screen
-- Splash screen
-- RTL layout support
-- Local database with Room + RxJava3
-- Networking with OkHttp
-
-## 📸 Screenshots
-
 <p align="center">
-  <img src="./screenshots/screen1.jpg" width="200" alt="Screen 1" />
-  <img src="./screenshots/screen2.jpg" width="200" alt="Screen 2" />
-  <img src="./screenshots/screen3.jpg" width="200" alt="Screen 3" />
-  <img src="./screenshots/screen4.jpg" width="200" alt="Screen 4" />
+  📄 Read in Persian: <a href="README.fa.md"><b>فارسی</b></a>
 </p>
 
-## 🛠 Tech Stack
+<p align="center">
+  <img src="./adobe%20xd/ic_launcher.png" width="400" title="DEFINEit Logo">
+</p>
 
-| Layer | Library / Tool |
-|---|---|
-| Language | Java 11 |
-| Min / Target SDK | 24 / 36 |
-| UI | AppCompat, Material, ConstraintLayout, chip-navigation-bar |
-| Fonts | Calligraphy3, ViewPump |
-| Database | Room 2.8.4 (RxJava3 support) |
-| Async | RxJava3 + RxAndroid |
-| Network | OkHttp 5.4.0 |
-| Voice / Speech | Android `RecognizerIntent` |
-| TTS | Android TextToSpeech wrapper (`TTsSingle`) |
+# DEFINEit (دیفاینیت) 🌐
+### Translate text, look up words, and chat across languages on Android
 
-## 📁 Project Structure
-
-```text
-app/src/main/java/ir/DEFINEit/
-├── adapters/              # Conversation, Dictionary, History, Starred adapters
-├── models/                # WordModel, TextModel, LangModel, ConversationModel
-├── tools/
-│   ├── translate_manager/ # Google Translate API calls
-│   ├── mydb/              # Room database, WordDao, TextDao
-│   ├── tts_manager/       # Text-to-Speech
-│   ├── language_manager/  # From/To language prefs
-│   ├── copy_helper/
-│   ├── shared_helper/
-│   └── ...
-└── views/
-    ├── activities/        # Main, Splash, Settings, ShowWord, StarWords, Histories
-    └── fragments/         # TranslateFragment, DictionaryFragment, ConversationFragment
-```
-
-Main entry points:
-- `views/fragments/TranslateFragment.java` — translator tab
-- `views/fragments/DictionaryFragment.java` — offline dictionary tab
-- `views/fragments/ConversationFragment.java` — conversation tab
-
-## 🚀 Build & Run
-
-1. Clone the repo:
-
-   ```bash
-   git clone <repo-url>
-   cd DEFINEit
-   ```
-
-2. Open the project in **Android Studio** (recent version with SDK 36).
-
-3. Let Gradle sync and download dependencies.
-
-4. Run on an emulator or device with **Android 7.0 (API 24)+**:
-
-   ```bash
-   ./gradlew assembleDebug
-   ```
-
-> Internet permission is required for Google Translate. The dictionary itself works from the local database.
-
-## 📋 Requirements
-
-- Android 7.0+ (minSdk 24)
-- Internet access (for Translate & Conversation)
-- Google TTS / speech packages on device (for voice & pronunciation)
-
-## 🤝 Contributing
-
-Pull requests and suggestions are welcome. If you find a bug in translation, dictionary results, or conversation flow, please open an issue with steps to reproduce.
+**DEFINEit** is an Android app for Persian-speaking users that combines Google Translate, an offline English–Persian dictionary, and a chat-style conversation mode in one place.
 
 ---
 
-Made with ❤️ for Persian-speaking users — **DEFINEit (دیفاینیت)**
+## 📥 Download the App
+
+Get the latest released version from Myket:
+
+<p align="center">
+  <a href="https://myket.ir/app/ir.DEFINEit"><b>⬇️ Download DEFINEit from Myket</b></a>
+</p>
+
+---
+
+## 🆕 What's New in v2.0.0 — Smarter conversations
+
+This release focuses on the conversation flow and a clear versioning scheme:
+
+*   **Thinking state:** a reply now appears immediately with a `Thinking...` status while the request is running.
+*   **Typewriter replies:** the translated text is typed out character by character, with the speed adjusted to the answer length.
+*   **Retry on failure:** tap a failed reply to open a TelegramDialog popup and resend the same text and language pair.
+*   **Versioning:** `versionCode` and `versionName` are now generated from `versionMajor`, `versionMinor`, and `versionPatch` in `app/build.gradle`.
+
+---
+
+## 🌟 Key Features
+
+### 🌍 Translation
+*   Translation powered by Google Translate, with a wide range of source and target languages.
+*   Auto-translate after a short pause while typing; swap languages with one tap.
+*   Copy the result, play it with Text-to-Speech, or dictate the source text with voice input.
+*   A dedicated language picker and a device-volume check before audio playback.
+
+### 📚 Persian Dictionary
+*   Offline English ↔ Persian word lookup backed by a local Room database.
+*   Live search in both languages after a short pause while typing.
+*   Voice search, plus a popup menu to copy, pronounce, or share a word.
+
+### 💬 Conversation
+*   Two-way, chat-style translation for real conversations.
+*   One send button and one mic button for the selected language pair.
+*   **AI-style replies:** a `Thinking...` placeholder turns into the answer with a typewriter effect.
+*   **Retry menu:** failed translations stay in the chat and can be retried by tapping the message.
+
+---
+
+## 🛠 Technologies Used
+
+DEFINEit is built with these tools and libraries:
+
+*   **Language:** Java 11
+*   **Architecture:** Activities and Fragments with a Room-backed local database
+*   **Database:** Room 2.8.4 (offline dictionary)
+*   **Networking:** OkHttp 5.4.0 (Google Translate requests)
+*   **UI:** AppCompat, Material Components, ConstraintLayout, chip-navigation-bar
+*   **Async:** RxJava3 and RxAndroid (debounced search and translation)
+*   **Voice:** Android `RecognizerIntent` and a Text-to-Speech wrapper (`TTsSingle`)
+*   **Extras:** TelegramDialog popup menus, Logger, QShare
+
+---
+
+## 🚀 Installation & Run Guide
+
+1. First, clone the project from GitHub:
+
+```bash
+git clone https://github.com/AmirBahadorAmiri/DEFINEit.git
+cd DEFINEit
+```
+
+2. Open the project in a recent version of **Android Studio** with SDK 37 installed.
+3. Let Gradle sync and download the dependencies.
+4. Run the app on a device or emulator with **Android 8.0 (API 26)+**:
+
+```bash
+./gradlew assembleDebug
+```
+
+---
+
+## 📸 Screenshots
+
+These store images show the main screens of the app; the interface supports right-to-left Persian text.
+
+| 📱 Home | 🌍 Translation | 📚 Dictionary | 💬 Conversation |
+|:---:|:---:|:---:|:---:|
+| <img width="220" height="352" alt="DEFINEit home screen" src="./adobe%20xd/store_pic/Web%201280%20%E2%80%93%201.png" /> | <img width="220" height="352" alt="Translation screen with source and target languages" src="./adobe%20xd/store_pic/Web%201280%20%E2%80%93%202.png" /> | <img width="220" height="352" alt="Persian dictionary search results" src="./adobe%20xd/store_pic/Web%201280%20%E2%80%93%203.png" /> | <img width="220" height="352" alt="Conversation chat with translated replies" src="./adobe%20xd/store_pic/Web%201280%20%E2%80%93%204.png" /> |
+
+---
+
+## 👨‍💻 Developer
+Developed by **Amir Bahador Amiri**

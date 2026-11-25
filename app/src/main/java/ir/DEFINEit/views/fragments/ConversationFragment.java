@@ -45,7 +45,7 @@ public class ConversationFragment extends Fragment {
 
     public static ConversationFragment conversationFragment;
 
-    AppCompatImageView activity_conversation_settings_btn, activity_conversation_mic_from, activity_conversation_mic_to, activity_conversation_reverse_btn, activity_conversation_send_from, activity_conversation_send_to;
+    AppCompatImageView activity_conversation_settings_btn, activity_conversation_mic_from, activity_conversation_reverse_btn, activity_conversation_send_to;
     AppCompatEditText activity_conversation_edittext;
     MaterialButton activity_conversation_from_btn, activity_conversation_to_btn;
     RecyclerView activity_conversation_recyclerview;
@@ -69,9 +69,7 @@ public class ConversationFragment extends Fragment {
     private void findViews(View view) {
         activity_conversation_settings_btn = view.findViewById(R.id.activity_conversation_settings_btn);
         activity_conversation_mic_from = view.findViewById(R.id.activity_conversation_mic_from);
-        activity_conversation_mic_to = view.findViewById(R.id.activity_conversation_mic_to);
         activity_conversation_reverse_btn = view.findViewById(R.id.activity_conversation_reverse_btn);
-        activity_conversation_send_from = view.findViewById(R.id.activity_conversation_send_from);
         activity_conversation_send_to = view.findViewById(R.id.activity_conversation_send_to);
         activity_conversation_edittext = view.findViewById(R.id.activity_conversation_edittext);
         activity_conversation_from_btn = view.findViewById(R.id.activity_conversation_from_btn);
@@ -92,8 +90,6 @@ public class ConversationFragment extends Fragment {
 
         activity_conversation_mic_from.setOnClickListener(v ->
                 startVoice(LanguageManager.getFromLangaugeCode(requireContext())));
-        activity_conversation_mic_to.setOnClickListener(v ->
-                startVoice(LanguageManager.getToLangaugeCode(requireContext())));
 
         activity_conversation_to_btn.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), ChangeLanguageActivity.class);
@@ -107,36 +103,34 @@ public class ConversationFragment extends Fragment {
 //            can be change request code to 1004 for change language
         });
 
-        activity_conversation_send_from.setOnClickListener(v -> {
-
-            String text = Objects.requireNonNull(activity_conversation_edittext.getText()).toString();
-            if (text.trim().isEmpty()) return;
-            String from = LanguageManager.getFromLangaugeCode(requireContext());
-            String to = LanguageManager.getToLangaugeCode(requireContext());
-
-            conversationModelList.add(new ConversationModel(text, from, 1));
-            conversationAdapter.notifyItemInserted((conversationModelList.size() - 1));
-            activity_conversation_recyclerview.scrollToPosition((conversationModelList.size() - 1));
-
-            translate(text, from, to);
-
-        });
         activity_conversation_send_to.setOnClickListener(v -> {
 
             String text = Objects.requireNonNull(activity_conversation_edittext.getText()).toString();
             if (text.trim().isEmpty()) return;
-            String from = LanguageManager.getToLangaugeCode(requireContext());
-            String to = LanguageManager.getFromLangaugeCode(requireContext());
+            activity_conversation_edittext.setText("");
+            String to = LanguageManager.getToLangaugeCode(requireContext());
+            String from = LanguageManager.getFromLangaugeCode(requireContext());
 
             conversationModelList.add(new ConversationModel(text, from, 1));
             conversationAdapter.notifyItemInserted((conversationModelList.size() - 1));
-            activity_conversation_recyclerview.scrollToPosition((conversationModelList.size() - 1));
 
-            translate(text, from, to);
+            ConversationModel answer = new ConversationModel("Thinking...", to, 2);
+            answer.setTranslationRequest(text, from, to);
+            answer.setThinking(true);
+            conversationModelList.add(answer);
+            int answerPosition = conversationModelList.size() - 1;
+            conversationAdapter.notifyItemInserted(answerPosition);
+            activity_conversation_recyclerview.scrollToPosition(answerPosition);
+
+            translate(text, from, to, answerPosition);
 
         });
 
-        conversationAdapter = new ConversationAdapter(conversationModelList);
+        conversationAdapter = new ConversationAdapter(conversationModelList, position -> {
+            ConversationModel model = conversationModelList.get(position);
+            setThinking(position);
+            translate(model.getSourceText(), model.getFromLanguage(), model.getToLanguage(), position);
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(requireContext());
         layoutManager.setReverseLayout(true); // ترتیب معکوس
         layoutManager.setStackFromEnd(true); // شروع از انتها
@@ -165,49 +159,59 @@ public class ConversationFragment extends Fragment {
         }
     }
 
-    private void translate(String text, String fromLanguage, String toLanguage) {
+    private void setAnswer(int position, String answer, boolean typewriter) {
+        ConversationModel model = conversationModelList.get(position);
+        model.setText(answer);
+        model.setThinking(false);
+        requireActivity().runOnUiThread(() -> {
+            if (typewriter)
+                conversationAdapter.notifyItemChanged(position, "typewriter");
+            else
+                conversationAdapter.notifyItemChanged(position);
+        });
+    }
 
-        activity_conversation_edittext.setText("");
-        if (!text.isEmpty()) {
-            ResponseListener responseListener = new ResponseListener() {
-                @Override
-                public void onSuccess(Response response) {
-                    if (response.isSuccessful()) {
-                        try {
-                            String body = Objects.requireNonNull(response.body()).string();
+    private void setThinking(int position) {
+        ConversationModel model = conversationModelList.get(position);
+        model.setText("Thinking...");
+        model.setThinking(true);
+        model.setFailed(false);
+        conversationAdapter.notifyItemChanged(position);
+    }
 
-                            JSONArray array = new JSONArray(body);
-                            JSONArray array_0 = array.getJSONArray(0);
-                            StringBuilder translatedText = new StringBuilder();
-                            for (int x = 0; x < array_0.length(); x++) {
-                                JSONArray dynamic_object = array_0.getJSONArray(x);
-                                if (!dynamic_object.isNull(0)) {
-                                    translatedText.append(dynamic_object.getString(0));
-                                }
-                            }
-                            requireActivity().runOnUiThread(() -> {
-                                conversationModelList.add(new ConversationModel(translatedText.toString(), toLanguage, 2));
-                                conversationAdapter.notifyItemInserted((conversationModelList.size() - 1));
-                                activity_conversation_recyclerview.scrollToPosition((conversationModelList.size() - 1));
-                            });
-                        } catch (Exception e) {
-                            Logger.debug(e);
+    private void fail(int position) {
+        conversationModelList.get(position).setFailed(true);
+        setAnswer(position, "متاسفانه مشکلی در برقراری ارتباط پیش آمد", false);
+    }
+
+    private void translate(String text, String fromLanguage, String toLanguage, int answerPosition) {
+        ResponseListener responseListener = new ResponseListener() {
+            @Override
+            public void onSuccess(Response response) {
+                try {
+                    String body = Objects.requireNonNull(response.body()).string();
+                    JSONArray array = new JSONArray(body);
+                    JSONArray array_0 = array.getJSONArray(0);
+                    StringBuilder translatedText = new StringBuilder();
+                    for (int x = 0; x < array_0.length(); x++) {
+                        JSONArray dynamic_object = array_0.getJSONArray(x);
+                        if (!dynamic_object.isNull(0)) {
+                            translatedText.append(dynamic_object.getString(0));
                         }
                     }
+                    setAnswer(answerPosition, translatedText.toString(), true);
+                } catch (Exception e) {
+                    Logger.debug(e);
+                    fail(answerPosition);
                 }
+            }
 
-                @Override
-                public void onFailure(Throwable throwable) {
-//                fragment_translate_scrollview.setVisibility(View.INVISIBLE);
-//                fragment_translate_copy_btn.setVisibility(View.INVISIBLE);
-//                share_text.setVisibility(View.INVISIBLE);
-                    requireActivity().runOnUiThread(() -> Toast.makeText(requireContext(), "متاسفانه مشکلی در برقراری ارتباط پیش آمد", Toast.LENGTH_SHORT).show());
-                }
-            };
-
-            TranslateManager.translateByGoogle(requireContext(), text, fromLanguage, toLanguage, responseListener);
-        }
-
+            @Override
+            public void onFailure(Throwable throwable) {
+                fail(answerPosition);
+            }
+        };
+        TranslateManager.translateByGoogle(requireContext(), text, fromLanguage, toLanguage, responseListener);
     }
 
     @Override
